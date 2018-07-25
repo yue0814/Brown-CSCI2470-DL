@@ -10,7 +10,7 @@ start = time.time()
 with open(args[1]) as train:
     words = [word for line in train for word in line.strip().split()]
     vocab = set(words)
-    print 'Size of vocabulary: %d' % len(vocab)
+    print('Size of vocabulary: %d' % len(vocab))
     word_to_id = {w: i for i, w in enumerate(vocab)}
     id_to_word = {i: w for i, w in enumerate(vocab)}
     dat = [word_to_id[w] for w in words]
@@ -20,13 +20,13 @@ with open(args[2]) as development:
     for i, v in enumerate(dev_words):
         if v not in vocab:
             dev_words[i] = v.replace(v, '*UNK*')
-    print 'Number of words in dev.txt: %d' % len(dev_words)
+    print('Number of words in dev.txt: %d' % len(dev_words))
     word_to_id = {w: i for i, w in enumerate(vocab)}
     id_to_word = {i: w for i, w in enumerate(vocab)}
     dev_dat = [word_to_id[w] for w in dev_words]
 end1 = time.time()
-print "Successfully loaded train.txt and dev.txt"
-print "The loading time is %.3f" %(end1-start)
+print("Successfully loaded train.txt and dev.txt")
+print("The loading time is %.3f" %(end1-start))
 data = np.array(dat).reshape([-1,1])
 dev_data = np.array(dev_dat).reshape([-1,1])
 
@@ -39,12 +39,12 @@ def get_batches(arr, BATCH_SZ, WINDOW_SZ):
     for n in range(0, arr.shape[1], WINDOW_SZ):
         x = arr[:, n: (n+WINDOW_SZ)]
         y = np.zeros_like(x)
-	if n+WINDOW_SZ+1 > arr.shape[1]:
-		z = arr[:,0]
-	else:
-		z = arr[:,n+WINDOW_SZ+1]
-        y[:,:-1], y[:,-1] = x[:, 1:], z
-	#y[:,:-1], y[:,-1] = x[:, 1:], y[:,0]
+        if n+WINDOW_SZ+1 > arr.shape[1]:
+            z = arr[:,0]
+        else:
+            z = arr[:,n+WINDOW_SZ+1]
+            y[:,:-1], y[:,-1] = x[:, 1:], z
+            #y[:,:-1], y[:,-1] = x[:, 1:], y[:,0]
         yield x, y
 
 WINDOW_SZ = 20
@@ -117,14 +117,14 @@ with tf.Session() as sess:
 			feed_dict={inputs:x, targets:y, weights:train_weights, keep_prob:1.0})
         total += batch_loss*WINDOW_SZ*BATCH_SZ
         if counter % 100 == 0:
-            print "Average loss is %.3f " % (total/counter)
-    print "Optimization Completed and the perplexity of train corpus is %.3f"\
-         %(math.exp(total/(int(len(words)/(BATCH_SZ*WINDOW_SZ))*BATCH_SZ*WINDOW_SZ)))
+            print("Average loss is %.3f " % (total/counter))
+    print("Optimization Completed and the perplexity of train corpus is %.3f"\
+         %(math.exp(total/(int(len(words)/(BATCH_SZ*WINDOW_SZ))*BATCH_SZ*WINDOW_SZ))))
     total_loss = 0
     for x, y in get_batches(dev_data, BATCH_SZ, WINDOW_SZ):    
         batch_loss = sess.run(loss,\
 			feed_dict={inputs:x, targets:y, weights:train_weights, keep_prob:1.0})
         total_loss += batch_loss*BATCH_SZ*WINDOW_SZ
-    print 'The perplexity of dev corpus is %.3f' % (math.exp(total_loss/(int(len(dev_words)/(BATCH_SZ*WINDOW_SZ))*BATCH_SZ*WINDOW_SZ)))
+    print('The perplexity of dev corpus is %.3f' % (math.exp(total_loss/(int(len(dev_words)/(BATCH_SZ*WINDOW_SZ))*BATCH_SZ*WINDOW_SZ))))
 end2 = time.time()
-print "The whole performance time is %.2f seconds" %(end2 - start)
+print("The whole performance time is %.2f seconds" %(end2 - start))

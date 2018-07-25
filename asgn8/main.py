@@ -66,4 +66,5 @@ for n in range(3):
                     break
     totOutput.append(np.mean(totRs[-100:]))
 
-print "After 3 different trials, the mean reward collected over the last 100 episodes for each trial is %.2f" % (sum(totOutput)/3.)
+print("After 3 different trials, the mean reward collected over the last 100 episodes for each trial is %.2f" %\
+      (sum(totOutput)/3.))

@@ -50,8 +50,8 @@ test_inputs = test_datas.reshape(test_datas.shape[0], -1).T
 train_inputs = train_inputs / 255.
 test_inputs = test_inputs / 255.
 
-print train_inputs.shape
-print train_labels.shape
+print(train_inputs.shape)
+print(train_labels.shape)
 
 # Network Structure
 class Network(object):
@@ -96,8 +96,8 @@ class Network(object):
         for i in range(X.shape[1]):     
             self.W, self.b = self.back_forward(X[:,i].reshape(784, 1), Y[:, i][0], learning_rate)
             if i % 1000 == 0:
-                print "Loss after %s iteration is %0.8f" \
-                    % (i, self.crossentropy_loss(X[:,i].reshape(784, 1), Y[:, i][0]))
+                print("Loss after %s iteration is %0.8f" \
+                    % (i, self.crossentropy_loss(X[:,i].reshape(784, 1), Y[:, i][0])))
         return self.W, self.b
 
 
@@ -106,7 +106,7 @@ def main():
     NN.train(train_inputs[:, 0:10000], train_labels[0:10000], learning_rate=0.5)
     res = NN.predict(test_inputs)
     accuracy = np.sum(res.reshape(10000) == test_labels.reshape(10000), axis=0) / 10000.
-    print "The accuracy is {0}".format(accuracy)
+    print("The accuracy is {0}".format(accuracy))
 
 
 if __name__ == '__main__':

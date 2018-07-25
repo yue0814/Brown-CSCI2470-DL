@@ -48,14 +48,14 @@ def train(mnist):
             step += 1
             train_loss += sess.run(loss, feed_dict={x: xs, y_: ys})
             if step % 300 == 0:
-                print  "After {0} training steps, loss is {1}".format(step, train_loss/step)
+                print("After {0} training steps, loss is {1}".format(step, train_loss/step))
 
         
         test_acc = sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels} )
-    print "After {0} training steps, test accuracy using average model is {1}".format(training_step,\
-                                                                             round(test_acc, 3))
+    print("After {0} training steps, test accuracy using average model is {1}".format(training_step,\
+                                                                             round(test_acc, 3)))
     end = time.time()
-    print "Running time is {0}s".format(round(end - start, 3))
+    print("Running time is {0}s".format(round(end - start, 3)))
 
 def main(argv=None): 
     

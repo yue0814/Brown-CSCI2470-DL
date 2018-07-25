@@ -92,10 +92,10 @@ with tf.Session() as sess:
         if step % 100 == 0:
             loss, acc = sess.run([cost, accuracy], feed_dict={X:xs, y:ys})
 
-            print "Iter {0}, Minibatch Loss = {1}, Training accuracy = {2}".format(str(step),\
-                                                                                    loss, acc)
+            print("Iter {0}, Minibatch Loss = {1}, Training accuracy = {2}".format(str(step),\
+                                                                                    loss, acc))
         step += 1
-    print "Optimization Completed" 
+    print("Optimization Completed")
 
-    print "Testing Accuracy: {0}".format(sess.run(accuracy,\
-             feed_dict={X: mnist.test.images.reshape(-1, 28, 28, 1), y: mnist.test.labels}))
+    print("Testing Accuracy: {0}".format(sess.run(accuracy,\
+             feed_dict={X: mnist.test.images.reshape(-1, 28, 28, 1), y: mnist.test.labels})))

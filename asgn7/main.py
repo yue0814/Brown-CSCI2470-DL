@@ -42,10 +42,11 @@ for n in range(3):
                 if dn:
                     rUnits = [(gamma**i)*v for i,v in enumerate(r_hist)]
                     disRs = [sum(rUnits[n:])/(gamma**n) for n in range(len(rUnits))]
-                    feed_dict = {state:st_hist, actions:a_hist, rewards:disRs}
-                    sess.run(optimizer,feed_dict=feed_dict)
+                    feed_dict = {state: st_hist, actions: a_hist, rewards: disRs}
+                    sess.run(optimizer, feed_dict=feed_dict)
                     totRs.append(step)
                     break
     totOutput.append(np.mean(totRs[-100:]))
 
-print "After 3 different trials, the mean reward collected over the last 100 episodes for each trial is %.2f" % (sum(totOutput)/3.)
+print("After 3 different trials, the mean reward collected over the last 100 episodes for each trial is %.2f" %\
+      (sum(totOutput)/3.))

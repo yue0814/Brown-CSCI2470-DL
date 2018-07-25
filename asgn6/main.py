@@ -3,15 +3,16 @@ import numpy as np
 import copy
 import time
 import sys
+import codecs
 
 args = sys.argv
 
 start = time.time()
 ###################### Preprocessing with "french_train.txt"
-with open(args[1]) as f:
+with codecs.open(args[1], "r", encoding="utf-8", errors="ignore") as f:
     sentences0 = [l.split() for l in f]
     max_length = max(map(lambda x:len(x), sentences0))
-    print "The longest sentence in french_train.txt has %d words." % max_length
+    print("The longest sentence in french_train.txt has %d words." % max_length)
 
 # Padding with STOP
 french_train = copy.deepcopy(sentences0)
@@ -19,10 +20,10 @@ for s in french_train:
     s.extend(['STOP']*(13-len(s)))
 
 ######################## Preprocessing with "french_test.txt"
-with open(args[3]) as f:
+with codecs.open(args[3], "r", encoding="utf-8", errors="ignore") as f:
     sentences1 = [l.split() for l in f]
     max_length = max(map(lambda x:len(x), sentences1))
-    print "The longest sentence in french_test.txt has %d words." % max_length
+    print("The longest sentence in french_test.txt has %d words." % max_length)
 
 # Padding with STOP
 french_test = copy.deepcopy(sentences1)
@@ -30,10 +31,10 @@ for s in french_test:
     s.extend(['STOP']*(13-len(s)))
 
 ######################### Preprocessing with "english_train.txt"
-with open(args[2]) as f:
+with codecs.open(args[2], "r", encoding="utf-8", errors="ignore") as f:
     sentences2 = [l.split() for l in f]
     max_length = max(map(lambda x:len(x), sentences2))
-    print "The longest sentence in english_train.txt has %d words." % max_length
+    print("The longest sentence in english_train.txt has %d words." % max_length)
 
 # Padding with STOP
 english_train = copy.deepcopy(sentences2)
@@ -41,10 +42,10 @@ for s in english_train:
     s.extend(['STOP']*(13-len(s)))
 
 ##################### Preprocessing with "english_test.txt"
-with open(args[4]) as f:
+with codecs.open(args[4], "r", encoding="utf-8", errors="ignore") as f:
     sentences3 = [l.split() for l in f]
     max_length = max(map(lambda x:len(x), sentences3))
-    print "The longest sentence in english_test.txt has %d words." % max_length
+    print("The longest sentence in english_test.txt has %d words." % max_length)
 
 # Padding with STOP
 english_test = copy.deepcopy(sentences3)
@@ -55,7 +56,7 @@ for s in english_test:
 ## Vocabulary for French
 wordsF = [word for line in french_train for word in line]
 vocabFrench = set(wordsF)
-print 'Size of French vocabulary: %d' % len(vocabFrench)
+print('Size of French vocabulary: %d' % len(vocabFrench))
 word_to_idF = {w: i for i, w in enumerate(vocabFrench)}
 id_to_wordF = {i: w for i, w in enumerate(vocabFrench)}
 datF_train = [word_to_idF[w] for w in wordsF]
@@ -64,7 +65,7 @@ datF_train = [word_to_idF[w] for w in wordsF]
 ## Vocabulary for English
 wordsE = [word for line in english_train for word in line]
 vocabEnglish = set(wordsE)
-print 'Size of English vocabulary: %d' % len(vocabEnglish)
+print('Size of English vocabulary: %d' % len(vocabEnglish))
 word_to_idE = {w: i for i, w in enumerate(vocabEnglish)}
 id_to_wordE = {i: w for i, w in enumerate(vocabEnglish)}
 datE_train = [word_to_idE[w] for w in wordsE]
@@ -75,7 +76,7 @@ wordsFt = [word for line in french_test for word in line]
 for i, v in enumerate(wordsFt):
     if v not in vocabFrench:
         wordsFt[i] = v.replace(v, '*UNK*')
-print 'Number of words in french_test.txt: %d' % len(wordsFt)
+print('Number of words in french_test.txt: %d' % len(wordsFt))
 datF_test = [word_to_idF[w] for w in wordsFt]
 
 
@@ -83,7 +84,7 @@ wordsEt = [word for line in english_test for word in line]
 for i, v in enumerate(wordsEt):
     if v not in vocabEnglish:
         wordsEt[i] = v.replace(v, '*UNK*')
-print 'Number of words in english_test.txt: %d' % len(wordsEt)
+print('Number of words in english_test.txt: %d' % len(wordsEt))
 datE_test = [word_to_idE[w] for w in wordsEt]    
 
 
@@ -225,8 +226,8 @@ with tf.Session() as sess:
                     mask0:secondTrueF(x), mask1:secondTrueE(np.hstack((pad,y[:,0:(wSz-1)]))), mask2:secondTrueF(x)})
         total += batch_loss
         if counter % 1000 == 0:
-            print "Average loss is %.3f " % (total/counter)
-    print "Optimization Completed"
+            print("Average loss is %.3f " % (total/counter))
+    print("Optimization Completed")
     acc = 0
     counter = 0
     for x, y in get_batches(datF_test, datE_test, bSz, wSz):
@@ -237,7 +238,7 @@ with tf.Session() as sess:
         acc += sum(accuracy(words, y))/20
         counter += 1 
 
-    print "The per symbol test accuracy is %.3f" % (acc/counter)
+    print("The per symbol test accuracy is %.3f" % (acc/counter))
         
 end = time.time()
-print "The whole running time is %.2f" %(end - start)
+print("The whole running time is %.2f" %(end - start))
