@@ -31,7 +31,7 @@ for n in range(3):
             a_hist = []
             r_hist = []
             for step in range(999):
-                # game.render()
+                game.render()
                 actDist = sess.run(output, feed_dict={state: [st]})
                 act = np.random.choice(2, 1, p=actDist[0])[0]
                 st1, r, dn, _ = game.step(act)
