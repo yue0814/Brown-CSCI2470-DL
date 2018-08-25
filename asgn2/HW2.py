@@ -13,6 +13,7 @@ batch_size = 512
 learning_rate = 0.0015 
 training_step = 1500
 
+
 def train(mnist):
     x = tf.placeholder(tf.float32, shape=[None, input_size])
     y_ = tf.placeholder(tf.float32, shape=[None, output_size])
@@ -57,12 +58,11 @@ def train(mnist):
     end = time.time()
     print("Running time is {0}s".format(round(end - start, 3)))
 
-def main(argv=None): 
-    
+
+def main(argv=None):
     mnist = input_data.read_data_sets("data/", one_hot=True)
     train(mnist)
 
 
 if __name__ == '__main__':
     tf.app.run()
-    
