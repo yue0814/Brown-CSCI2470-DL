@@ -49,8 +49,12 @@ def train_step():
             train_loss += session.run(model.loss, feed_dict={model.x: xs, model.y_: ys})
             if step % 300 == 0:
                 print("After {0} training steps, loss is {1}".format(step, train_loss / step))
-        test_acc = session.run(valid_model.accuracy, feed_dict={valid_model.x: mnist.test.images, valid_model.y_: mnist.test.labels})
+        print("The training accuracy is %.4f\n" % session.run(model.accuracy, feed_dict={model.x: mnist.train.images, model.y_: mnist.train.labels}))
+
+        model.keep_prob = 1.0
+        test_acc = session.run(model.accuracy, feed_dict={model.x: mnist.test.images, model.y_: mnist.test.labels})
         print("After {0} training steps, test accuracy using average model is {1}".format(eval_config.epochs, round(test_acc, 3)))
+
 
 def main(_):
     train_step()
