@@ -3,7 +3,7 @@
 
 import numpy as np
 import gzip
-import sys
+# import sys
 # import matplotlib.pyplot as plt
 # import matplotlib as mpl
 
@@ -29,10 +29,16 @@ def extract_labels(filename, num_labels):
         labels = labels.reshape(1, num_labels)
     return labels
 
-train_data_path = sys.argv[1]
-train_label_path = sys.argv[2]
-test_data_path = sys.argv[3]
-test_label_path = sys.argv[4]
+# train_data_path = sys.argv[1]
+# train_label_path = sys.argv[2]
+# test_data_path = sys.argv[3]
+# test_label_path = sys.argv[4]
+
+train_data_path = "./train-images-idx3-ubyte.gz"
+train_label_path = "./train-labels-idx1-ubyte.gz"
+test_data_path = "./t10k-images-idx3-ubyte.gz"
+test_label_path = "./t10k-labels-idx1-ubyte.gz"
+
 
 train_datas = extract_images(train_data_path, 60000)
 train_labels = extract_labels(train_label_path, 60000)
@@ -53,9 +59,9 @@ test_inputs = test_inputs / 255.
 print(train_inputs.shape)
 print(train_labels.shape)
 
+
 # Network Structure
 class Network(object):
-
     def __init__(self, layers_dim):
         input_dim = layers_dim[0]
         output_dim = layers_dim[1]
